@@ -1,97 +1,75 @@
 <template>
-  <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation
+  <v-card
+      class="mx-auto pa-md-6 justify-center"
+      style="margin-bottom:1em"
+      max-width="600px"
+      elevation="8"
+      tile
   >
-    <v-text-field
-        v-model="name"
-        :counter="10"
-        :rules="nameRules"
-        label="Name"
-        required
-    ></v-text-field>
-
-    <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        required
-    ></v-text-field>
-
-    <v-select
-        v-model="select"
-        :items="items"
-        :rules="[v => !!v || 'Item is required']"
-        label="Item"
-        required
-    ></v-select>
-
-    <v-checkbox
-        v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
-        required
-    ></v-checkbox>
-
-    <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="validate"
+    <v-form
+        ref="form"
+        lazy-validation
     >
-      Validate
-    </v-btn>
+      <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          required
+      ></v-text-field>
 
-    <v-btn
-        color="error"
-        class="mr-4"
-        @click="reset"
-    >
-      Reset Form
-    </v-btn>
+      <v-text-field
+          v-model="password"
+          :rules="passwordRules"
+          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show ? 'text' : 'password'"
+          name="input-10-1"
+          label="Password"
+          hint="At least 8 characters"
+          counter
+          @click:append="show = !show"
+      ></v-text-field>
+    </v-form>
 
-    <v-btn
-        color="warning"
-        @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
-  </v-form>
+    <v-card-item class="align-center justify-center">
+      <v-btn
+          outlined
+          color="primary"
+          class="justify-center align-center "
+          @click="submitForm"
+      >
+        Login
+      </v-btn>
+    </v-card-item>
+
+
+  </v-card>
 </template>
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    name: 'UserLogin',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    select: null,
-    items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-    ],
-    checkbox: false,
-  }),
+  data() {
+    return {
+      show:false,
+      email: null,
+      valid: true,
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+      ],
+      password: null,
+
+    }
+  },
 
   methods: {
-    validate () {
-      this.$refs.form.validate()
-    },
-    reset () {
-      this.$refs.form.reset()
-    },
-    resetValidation () {
-      this.$refs.form.resetValidation()
+    async submitForm() {
+      // checks all inputs
+      const resp = await this.$refs.form.validate();
+      if (!resp.valid) {
+        // if ANY fail validation
+        alert('Form successfully submitted.')
+      } else {
+        alert('Form failed validation')
+      }
     },
   },
 }

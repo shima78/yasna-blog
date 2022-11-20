@@ -7,7 +7,7 @@
         scroll-target="#scrolling-techniques-7"
 
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
 
       <v-toolbar-title>Yasna Blog</v-toolbar-title>
 
@@ -23,7 +23,7 @@
 
 
     </v-app-bar>
-      <v-container style="height: 1500px; " class="my-md-16">
+      <v-container style="height: 1500px;margin-top: 4em " >
         <router-view/>
       </v-container>
 
