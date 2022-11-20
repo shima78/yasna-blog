@@ -19,7 +19,6 @@
 
       <v-text-field
           v-model="password"
-          :rules="passwordRules"
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show ? 'text' : 'password'"
           name="input-10-1"
@@ -33,6 +32,7 @@
     <v-card-item class="align-center justify-center">
       <v-btn
           outlined
+          :loading="loading"
           color="primary"
           class="justify-center align-center "
           @click="submitForm"
@@ -45,12 +45,15 @@
   </v-card>
 </template>
 <script>
+import router from "../router/router"
+
 export default {
   data() {
     return {
       show:false,
       email: null,
       valid: true,
+      loading: false,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
@@ -59,14 +62,43 @@ export default {
 
     }
   },
-
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  created() {
+    if (this.loggedIn) {
+      router.push("/home");
+    }
+  },
   methods: {
     async submitForm() {
       // checks all inputs
       const resp = await this.$refs.form.validate();
-      if (!resp.valid) {
+      if (resp.valid) {
         // if ANY fail validation
-        alert('Form successfully submitted.')
+
+        this.loading = true;
+        const user ={
+          email: this.email,
+          password: this.password
+        }
+        this.$store.dispatch("auth/login", user).then(
+            () => {
+              router.push("/home");
+            },
+            (error) => {
+              this.loading = false;
+              this.message =
+                  (error.response &&
+                      error.response.data &&
+                      error.response.data.message) ||
+                  error.message ||
+                  error.toString();
+              console.log(error)
+            }
+        );
       } else {
         alert('Form failed validation')
       }
