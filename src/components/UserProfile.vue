@@ -1,7 +1,7 @@
 <template>
   <v-card max-width="450px" class="mx-auto bg" elevation="2">
     <v-img class="" height="200px"
-           src="http://unblast.com/wp-content/uploads/2021/09/Real-Estate-Agent-Illustration.jpg"
+
            gradient="150deg, rgb(185 224 255 / 58%) 0%, rgb(243 220 246 / 52%) 35%, rgb(223 255 242 / 74%) 74%">
     </v-img>
     <v-row justify="center">
@@ -31,7 +31,8 @@ export default {
   name: "UserProfile",
   computed: {
     currentUser() {
-      return this.$store.state.auth.user;
+      console.log(this.$store.state.auth.user)
+      return JSON.parse(JSON.stringify(this.$store.state.auth.user));
     }
   },
 }
