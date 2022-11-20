@@ -4,27 +4,26 @@
         absolute
         style="background-color: darkblue; color: white"
         elevate-on-scroll
-        scroll-target="#scrolling-techniques-7"
-
     >
-
-
-      <v-toolbar-title>Yasna Blog</v-toolbar-title>
-
+      <v-toolbar-title @click="$router.push('/home')">Yasna Blog</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-card-item v-if="loggedIn">
+        <v-btn to="/home" @click="logOut">
+          logout
+        </v-btn>
+        <v-btn to="/profile" >
+          Profile
+        </v-btn>
+      </v-card-item>
+     <v-card-item v-else>
+       <v-btn to="/login" >
+         login
+       </v-btn>
+       <v-btn to="/signUp">
+         sign up
+       </v-btn>
 
-      <v-btn to="/login" v-if="!loggedIn">
-       login
-      </v-btn>
-      <v-btn to="/signUp" v-if="!loggedIn">
-        sign up
-      </v-btn>
-      <v-btn to="/home" v-if="loggedIn" @click="logOut">
-        logout
-      </v-btn>
-      <v-btn to="/signUp" v-if="loggedIn">
-        Profile
-      </v-btn>
+     </v-card-item>
 
 
     </v-app-bar>
@@ -41,7 +40,7 @@ export default {
   name: "AppNavbar",
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
+      return  this.$store.state.auth.status.loggedIn
     },
   },
   methods: {

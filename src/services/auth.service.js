@@ -21,7 +21,13 @@ class AuthService {
             },
             data: data
         };
-        return axios(config)
+        return axios(config).then(response => {
+            console.log(response)
+            if (response.data.user.token) {
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+            }
+            return response.data;
+        });
     }
 
     logout() {
