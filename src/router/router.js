@@ -12,6 +12,11 @@ const router = createRouter({
             name: 'home',
             component: HomePage
         },
+        {
+            path: '/',
+            name: 'landing',
+            component: HomePage
+        },
 
         {
             path: '/login',
@@ -33,7 +38,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // redirect to login page if user is not logged in and trying to access a restricted page
-    const publicPages = ['/login', '/home','/signUp' ]
+    const publicPages = ['/login', '/home','/signUp', '/']
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = localStorage.getItem('user')
 
